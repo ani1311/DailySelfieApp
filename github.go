@@ -9,21 +9,23 @@ import (
 	"github.com/google/go-github/v57/github"
 )
 
-func UploadFile(name string, data []byte) error {
-	client := github.NewClient(nil).WithAuthToken("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")
+func UploadFile(data []byte) error {
+	client := github.NewClient(nil).WithAuthToken("")
 
 	hasher := sha1.New()
 	hasher.Write(data)
 	dateNow := time.Now().Format("2006-01-02")
+	path := time.Now().Format("2006/01")
+	name := time.Now().Format("02") + ".png"
 
 	opts := github.RepositoryContentFileOptions{
 		Message: github.String("Selfie: " + dateNow),
 		Content: data,
-		Branch:  github.String("temp"),
+		Branch:  github.String("selfies"),
 		SHA:     github.String(dateNow),
 	}
 
-	fileResp, resp, err := client.Repositories.CreateFile(context.TODO(), repoOwner, repoName, "data/"+name, &opts)
+	fileResp, resp, err := client.Repositories.CreateFile(context.TODO(), repoOwner, repoName, path+"/"+name, &opts)
 	if err != nil {
 		log.Errf("Error uploading file: %v", err)
 		return err

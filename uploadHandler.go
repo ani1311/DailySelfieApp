@@ -37,7 +37,7 @@ func uploadhander(w http.ResponseWriter, r *http.Request) {
 
 	log.Infof("Received file with length: %d", len(fileBytes))
 
-	err = UploadFile("selfie.jpg", fileBytes)
+	err = UploadFile(fileBytes)
 	if err != nil {
 		log.Errf("Error uploading file: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
